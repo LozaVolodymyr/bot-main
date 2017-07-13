@@ -1,0 +1,17 @@
+{
+  "name": "slackbot",
+  "version": "1.0.0",
+  "description": "common bot for parsing game sites",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Loza V.",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/client": "^3.10.0",
+    "async": "^2.5.0",
+    "colors": "^1.1.2",
+    "express": "^4.15.3"
+  }
+}
