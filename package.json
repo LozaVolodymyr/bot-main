@@ -4,6 +4,7 @@
   "description": "common bot for parsing game sites",
   "main": "server/server.js",
   "scripts": {
+    "start": "node bin/run.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Loza V.",
@@ -12,6 +13,7 @@
     "@slack/client": "^3.10.0",
     "async": "^2.5.0",
     "colors": "^1.1.2",
-    "express": "^4.15.3"
+    "express": "^4.15.3",
+    "superagent": "^3.5.2"
   }
 }

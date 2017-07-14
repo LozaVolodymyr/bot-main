@@ -1,13 +1,21 @@
 const service = require('../server/server');
 const http = require('http');
 const colors = require('colors');
-const { initSlack, addAuthenticatedHandle} = require('../server/slackClient');
-const server = http.createServer();
 const async = require('async');
 
 
-const rtm = initSlack('xoxb-205552353666-6ZMzmSIyUSRrRqbAr96hJtQe', 'verbose');
+const { initSlack, addAuthenticatedHandle} = require('../server/slackClient');
+
+const slackToken = process.env.SLACK_BOT_TOKEN || 'xoxb-205552353666-QebxKECMNTZyExoGIxie1dIL';
+const witToken = process.env.WIT_BOT_TOKEN || 'AGFLNR3CKY6EEXV57SJGSETVX4QMT7A5';
+const slackLogLevel = process.env.SLACK_LOG_LEVEL || 'verbose';
+const witClient = require('../server/witClient')(witToken);
+
+const server = http.createServer();
+
+const rtm = initSlack(slackToken, slackLogLevel, witClient);
 rtm.start();
+
 
 
 async.waterfall([slackConnection, mongoConnection, expressConnection], (err, result) => {
