@@ -4,31 +4,46 @@ const colors = require('colors');
 const async = require('async');
 
 
+
+/**
+ * Load environment variables from .env file, where API keys and passwords are configured.
+ * For development only. Move to real ENV_VAR on production
+ */
+const dotenv = require('dotenv');
+dotenv.load({ path: '.env' || ""});
+
+
 const { initSlack, addAuthenticatedHandle} = require('../server/slackClient');
 
-const slackToken = process.env.SLACK_BOT_TOKEN || 'xoxb-205552353666-QebxKECMNTZyExoGIxie1dIL';
-const witToken = process.env.WIT_BOT_TOKEN || 'AGFLNR3CKY6EEXV57SJGSETVX4QMT7A5';
-const slackLogLevel = process.env.SLACK_LOG_LEVEL || 'verbose';
+const slackToken = process.env.SLACK_BOT_TOKEN;
+const witToken = process.env.WIT_BOT_TOKEN;
+const slackLogLevel = process.env.SLACK_LOG_LEVEL;
 const witClient = require('../server/witClient')(witToken);
+const serviceRegister = service.get('serviceRegister');
+const server = http.createServer(service);
+const routers = require('../server/routes')(service, serviceRegister);
 
-const server = http.createServer();
 
-const rtm = initSlack(slackToken, slackLogLevel, witClient);
+const rtm = initSlack(slackToken, slackLogLevel, witClient, serviceRegister);
 rtm.start();
 
 
 
-async.waterfall([slackConnection, mongoConnection, expressConnection], (err, result) => {
+   addAuthenticatedHandle(rtm, () => {
+        console.log(`BOT ONLINE`.green);
+
+    })
+
+
+async.waterfall([slackConnection, mongoConnection, expressConnection], (err, result) => { 
     if(err) return console.log(`ERROR ON CONNECTION ${err}`.red);
      console.log(`ALL PROCESS CONNECTED SUCCESSFULLY`.green.bold.underline);
 });
 
 function slackConnection(callback){
-    addAuthenticatedHandle(rtm, () => {
-        console.log(`BOT ONLINE`.green);
+ 
+ 
         return callback();
-    })
-
 }
 
 function mongoConnection(callback){
