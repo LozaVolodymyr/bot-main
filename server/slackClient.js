@@ -19,7 +19,7 @@ function handleOnMessage(message){
     if(err) return console.log(err);
     return rtm.sendMessage(list, message.channel)
   });
-  if(message.text.toLowerCase().includes('siri')) {
+  if(message.text.toLowerCase().includes('vbot')) {
     wit(message.text, (err, res) => {
       if(err) return console.log('ERROR'.bgRed, err);
       try {
