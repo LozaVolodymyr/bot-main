@@ -2,12 +2,20 @@ const { RtmClient, CLIENT_EVENTS, RTM_EVENTS } = require('@slack/client');
 
 let rtm = null;
 let wit = null;
+<<<<<<< HEAD
 let register = null;
 // it is return new Real Time slack client
 function initSlack (token, logLevel, witClient, serviceRegister) {
   rtm = new RtmClient(token, logLevel);
   wit = witClient;
   register = serviceRegister;
+=======
+
+// it is return new Real Time slack client
+function initSlack (token, logLevel, witClient) {
+  rtm = new RtmClient(token, logLevel);
+  wit = witClient;
+>>>>>>> 3663c4e... 1.1.0
   addAuthenticatedHandle(rtm, handleOnAuthenticated);
   rtm.on(RTM_EVENTS.MESSAGE, handleOnMessage);
   return rtm;
@@ -19,6 +27,7 @@ function handleOnMessage(message){
     if(err) return console.log(err);
     return rtm.sendMessage(list, message.channel)
   });
+<<<<<<< HEAD
   if(message.text.toLowerCase().includes('vbot')) {
     wit(message.text, (err, res) => {
       if(err) return console.log('ERROR'.bgRed, err);
@@ -26,6 +35,15 @@ function handleOnMessage(message){
         if(!res.intent || !res.intent[0] || !res.intent[0].value) return rtm.sendMessage('Intent is required', message.channel)
         const intent = require('./intents/' + res.intent[0].value); // intent router
         intent(res, register, (err, response) => {
+=======
+  if(message.text.toLowerCase().includes('siri')) {
+    wit(message.text, (err, res) => {
+      if(err) return console.log('ERROR'.bgRed, err);
+      try {
+        if(!res.intent || !res.intent[0] || !res.intent[0].value) throw new Error('Intent is required')
+        const intent = require('./intents/' + res.intent[0].value); // intent router
+        intent(res, (err, response) => {
+>>>>>>> 3663c4e... 1.1.0
           if(err) return console.log(`ERR ${err}`.red);
           return rtm.sendMessage(response, message.channel)
         })
